@@ -8,8 +8,7 @@ public class Player3D_ShieldManager : MonoBehaviour
 	int[] nums25 = {0, 1, 2, -1, -2};
 	int[] shieldExists = new int[125];
 	int shieldNumMax = 125; //(for a 5x5 grid)
-	public int shieldNum = 0;
-	private Vector3 startLocation;
+	public int shieldNum = 0; //to track the number of active sheilds
 
 	bool newShields = true;
 
@@ -28,14 +27,14 @@ public class Player3D_ShieldManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //input to add missing blocks
+        //input to add missing blocks (for testing)
 		if (Input.GetKeyDown("b"))
 		{
 			AddShieldCube();
 		}
     }
 
-
+	//initialize ShieldCubes in three steps 
 	void MakeAllShields()
 	{
 		//STEP 1: reset shieldExists array with empty slots 
@@ -44,7 +43,7 @@ public class Player3D_ShieldManager : MonoBehaviour
 			shieldExists[i] = 0;
 		}
 
-		//STEP 2: populate shieldLocations array with desired 125 locations:
+		//STEP 2: populate shieldLocations array with desired 125 positions for a 5x5x5 grid:
 		int Ycount = 0; //to iterate the Y value after each 25 locations
 		for (int i = 0; i < shieldNumMax; i+=25)
 		{ 	
@@ -62,7 +61,7 @@ public class Player3D_ShieldManager : MonoBehaviour
 		Ycount = 0;
 
 
-		//STEP 3: create shields, starting at item 1 (no extra cube at center)
+		//STEP 3: create the ShieldCubes, starting at item 1 (no extra cube at center)
 		for (int i = 1; i < shieldNumMax; i++)
 		{
 			GameObject newShield = Instantiate (cubeShield, 
@@ -73,10 +72,10 @@ public class Player3D_ShieldManager : MonoBehaviour
 			newShield.GetComponent<ShieldCube_Explode>().shieldManager = gameObject;
 			shieldExists[i] = 1;
 		}
-
 		CountShields();
 	}
 
+	//function to count current number of shields
 	void CountShields()
 	{
 		//reset the shield number
@@ -88,10 +87,11 @@ public class Player3D_ShieldManager : MonoBehaviour
 			shieldNum += shieldExists[i];
 		}
 		Debug.Log("Number of shields = " + shieldNum);
-		Debug.Log("Shield locations: " + shieldLocations);
+		Debug.Log("Shield locations: " + string.Join(", ", shieldLocations));
 	}
 
-	void AddShieldCube()
+	//function to add a cube when materials are ready, sent by engineer
+	public void AddShieldCube()
 	{
 		//look through shields to try to find an empty one: 
 		for (int i = 1; i < shieldNumMax; i++){
@@ -110,6 +110,8 @@ public class Player3D_ShieldManager : MonoBehaviour
 		Debug.Log("no empty spaces to add a cube");
 		//and reimburse the cost fot he shieldcube
 	}
+
+	//function to remove a destroyed cube, sent by ShieldCube being destroyed 
 	public void RemoveShieldCube(int cubeID)
 	{
 		//set destroyed cube slot to empty:

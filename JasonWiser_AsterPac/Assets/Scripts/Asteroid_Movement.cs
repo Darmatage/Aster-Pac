@@ -20,7 +20,7 @@ public class Asteroid_Movement : MonoBehaviour
     void Update()
     {
 		//rotate pivot:
-		transform.Rotate (roidRotation * Time.deltaTime); 
+		//transform.Rotate (roidRotation * Time.deltaTime); 
     }
 
 	void StartAsteroid()

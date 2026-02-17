@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Player3D_Move : MonoBehaviour
 {
 	public float rotationSpeed = 5f;
-	public float moveSpeed = 5f;
+	public float moveSpeed = 10f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,16 +18,16 @@ public class Player3D_Move : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T)) //accelerate
 		{
-			if (moveSpeed <= 1)
-			{
-				moveSpeed = 40;
-			}
+			//if (moveSpeed <= 1)
+			//{
+				moveSpeed += 5;
+			//}
 		}
-		if (Input.GetKeyDown(KeyCode.G)) //accelerate
+		if (Input.GetKeyDown(KeyCode.G)) //deccelerate
 		{
 			if (moveSpeed > 0)
 			{
-				moveSpeed = 1;
+				moveSpeed -= 5;
 			}
 		}
     }
@@ -36,6 +36,7 @@ public class Player3D_Move : MonoBehaviour
     void FixedUpdate()
     {
         transform.position += transform.forward * moveSpeed * Time.fixedDeltaTime;
+		ShipMovement();
     }
 
 	private void ShipMovement()
